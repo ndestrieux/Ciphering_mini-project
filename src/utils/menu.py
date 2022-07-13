@@ -17,9 +17,9 @@ class Menu:
     @property
     def options(self):
         option_list = {
-            1: self.manager.submenu.show,
+            1: self.manager.encrypt_text,
             2: self.manager.save_to_file,
-            3: self.manager.read_from_file,
+            3: self.manager.decript_from_file,
             4: self.manager.read_from_memory,
             5: sys.exit,
         }
@@ -43,26 +43,23 @@ class Menu:
             self.show()
 
 
-class SubMenu(Menu):
-    SUBMENU = {
+class CipherMenu(Menu):
+    CIPHERMENU = {
         1: "Use ROT47",
         2: "Use ROT13",
         3: "Go back",
     }
 
-    def __init__(self, manager):
-        super().__init__(manager)
-
     @property
     def options(self):
         option_list = {
-            1: "ROT47",
-            2: "ROT13",
+            1: self.manager.rot47_cipher.cipher,
+            2: self.manager.rot13_cipher.cipher,
             3: self.manager.show_menu,
         }
+        return option_list
 
     def show(self):
-        print("Submenu")
-
-    def get_choice(self):
-        pass
+        for key, value in self.CIPHERMENU.items():
+            print(f"{key}. {value}")
+        self.get_choice()

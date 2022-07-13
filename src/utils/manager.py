@@ -1,13 +1,14 @@
 import time
-from .menu import Menu, SubMenu
-from .buffer import Buffer
+from .menu import Menu, CipherMenu
+from .cipher import Rot47CipherFactory, Rot13CipherFactory
 
 
 class Manager:
     def __init__(self):
-        self.submenu = SubMenu(self)
+        self.rot47_cipher = Rot47CipherFactory(self)
+        self.rot13_cipher = Rot13CipherFactory(self)
+        self.cipher_menu = CipherMenu(self)
         self.menu = Menu(self)
-        self.buffer = Buffer()
 
     def start(self):
         print("Welcome!")
@@ -18,15 +19,12 @@ class Manager:
         self.menu.show()
 
     def encrypt_text(self):
-        pass
-
-    def decrypt_text(self):
-        pass
+        self.cipher_menu.show()
 
     def save_to_file(self):
         print("Save to file.")
 
-    def read_from_file(self):
+    def decript_from_file(self):
         print("Read from file.")
 
     def read_from_memory(self):

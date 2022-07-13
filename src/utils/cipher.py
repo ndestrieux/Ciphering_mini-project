@@ -2,20 +2,14 @@ from abc import ABC
 
 
 class Cipher(ABC):
-    def __init__(self):
-        pass
-
     def do_cipher(self):
-        pass
+        raise NotImplementedError
 
     def do_decipher(self):
-        pass
+        raise NotImplementedError
 
 
 class Rot47Cipher(Cipher):
-    def __init__(self):
-        pass
-
     def do_cipher(self):
         pass
 
@@ -23,10 +17,7 @@ class Rot47Cipher(Cipher):
         pass
 
 
-class Rot13(Cipher):
-    def __init__(self):
-        pass
-
+class Rot13Cipher(Cipher):
     def do_cipher(self):
         pass
 
@@ -35,24 +26,27 @@ class Rot13(Cipher):
 
 
 class CipherFactory(ABC):
+    def __init__(self, manager):
+        self.manager = manager
+
     def cipher(self):
-        pass
+        raise NotImplementedError
+
+    def decipher(self):
+        raise NotImplementedError
+
+
+class Rot47CipherFactory(CipherFactory):
+    def cipher(self):
+        print("ROT47 cipher")
 
     def decipher(self):
         pass
 
 
-class CipherROT47Factory(CipherFactory):
+class Rot13CipherFactory(CipherFactory):
     def cipher(self):
-        pass
-
-    def decipher(self):
-        pass
-
-
-class CipherROT13Factory(CipherFactory):
-    def cipher(self):
-        pass
+        print("ROT13 cipher")
 
     def decipher(self):
         pass
