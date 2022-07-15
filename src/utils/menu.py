@@ -1,4 +1,5 @@
 import time
+from .exceptions import ChoiceOutOfRange
 
 
 class Menu:
@@ -23,13 +24,16 @@ class Menu:
                     "Please choose an option by typing the associated number and then press <Enter>:\n"
                 )
             )
-            if choice not in list(self.MENU_CONTEXT.keys()):
-                raise TypeError
+            choice_list = list(self.MENU_CONTEXT.keys())
+            if choice not in choice_list:
+                raise ChoiceOutOfRange(choice_list)
             return choice
-        except (ValueError, TypeError):
-            print("Choice should be a number within range.")
-            time.sleep(1)
-            return default
+        except ValueError:
+            print("Invalid choice. It should be a number.")
+        except ChoiceOutOfRange as e:
+            print(e)
+        time.sleep(1)
+        return default
 
 
 class CipherMenu(Menu):
