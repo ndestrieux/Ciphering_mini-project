@@ -1,12 +1,15 @@
 import time
 import sys
 from typing import Dict
+from pathlib import Path
 from .menu import Menu, CipherMenu
 from .cipher import Rot47CipherFactory, Rot13CipherFactory
 from .buffer import Buffer
 
 
 class Manager:
+    DATA_FOLDER = Path("src/utils/data/")
+
     def __init__(self):
         self.rot47_cipher = Rot47CipherFactory()
         self.rot13_cipher = Rot13CipherFactory()
@@ -25,7 +28,7 @@ class Manager:
                 1: (self.show_menu, "CipherMenu"),
                 2: (self.save_to_file,),
                 3: (self.decript_from_file,),
-                4: (self.read_from_memory,),
+                4: (self.display_data_from_memory,),
                 5: (sys.exit,),
             },
             "CipherMenu": {
@@ -79,12 +82,23 @@ class Manager:
         self.show_menu("MainMenu")
 
     def save_to_file(self):
-        print("Save to file.")
+        memory = self.read_from_memory()
+        for key, values in memory:
+            file = f"{self.DATA_FOLDER}/{key}"
+            with open(file, "a+", encoding="utf-8") as f:
+                for value in values:
+                    f.write(value + "\n")
+        self.buffer.clear()
+        self.show_menu("MainMenu")
 
     def decript_from_file(self):
         print("Read from file.")
 
     def read_from_memory(self):
-        print(self.buffer)
+        memory = self.buffer.encrypted_text_dict.items()
+        return memory
+
+    def display_data_from_memory(self):
+        print(self.read_from_memory())
         time.sleep(2)
         self.show_menu("MainMenu")
