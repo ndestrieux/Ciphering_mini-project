@@ -1,6 +1,7 @@
+import os
 import time
 import sys
-from typing import Dict
+from typing import Dict, List
 from pathlib import Path
 from .menu import Menu, CipherMenu
 from .cipher import Rot47CipherFactory, Rot13CipherFactory
@@ -27,8 +28,8 @@ class Manager:
                 0: (self.show_menu, "MainMenu"),
                 1: (self.show_menu, "CipherMenu"),
                 2: (self.save_to_file,),
-                3: (self.decript_from_file,),
-                4: (self.display_data_from_memory,),
+                3: (self.decrypt_from_file,),
+                4: (self.read_from_memory,),
                 5: (sys.exit,),
             },
             "CipherMenu": {
@@ -74,31 +75,58 @@ class Manager:
         text = input("Text to encrypt:\n")
         return text
 
+    def get_data_from_file(self, file: str) -> List:
+        path = Path(f"{self.DATA_FOLDER}/{file}")
+        with open(path, "r", encoding="utf-8") as f:
+            encrypted_text_list = f.read().splitlines()
+        return encrypted_text_list
+
+    def get_data_from_memory(self) -> Dict:
+        memory = self.buffer.encrypted_text_dict
+        return memory
+
+    @staticmethod
+    def display_data(data: Dict):
+        print(25 * "=")
+        print(25 * "=")
+        for key, values in data.items():
+            print(key + ":")
+            for value in values:
+                print(value)
+            print(25 * "=")
+        input("Hit <Enter> to continue.")
+
     def encrypt_text(self, encryption_type: str):
         text = self.get_text()
         ciphering = self.encryption_types.get(encryption_type).cipher()
-        encrypted_text = ciphering.do_cipher(text)
+        encrypted_text = ciphering.do_action(text)
         self.buffer.add(encryption_type, encrypted_text)
         self.show_menu("MainMenu")
 
     def save_to_file(self):
-        memory = self.read_from_memory()
-        for key, values in memory:
-            file = f"{self.DATA_FOLDER}/{key}"
+        memory = self.get_data_from_memory()
+        for key, values in memory.items():
+            file = Path(f"{self.DATA_FOLDER}/{key}")
             with open(file, "a+", encoding="utf-8") as f:
                 for value in values:
                     f.write(value + "\n")
         self.buffer.clear()
         self.show_menu("MainMenu")
 
-    def decript_from_file(self):
-        print("Read from file.")
+    def decrypt_from_file(self):
+        from_file_to_dict = {}
+        file_list = os.listdir(self.DATA_FOLDER)
+        for file in file_list:
+            encrypted_text_list = self.get_data_from_file(file)
+            ciphering = self.encryption_types.get(file).decipher()
+            decrypted_text_list = []
+            for encrypted_text in encrypted_text_list:
+                decrypted_text_list.append(ciphering.do_action(encrypted_text))
+            from_file_to_dict[file] = decrypted_text_list
+        self.display_data(from_file_to_dict)
+        self.show_menu("MainMenu")
 
     def read_from_memory(self):
-        memory = self.buffer.encrypted_text_dict.items()
-        return memory
-
-    def display_data_from_memory(self):
-        print(self.read_from_memory())
-        time.sleep(2)
+        memory = self.get_data_from_memory()
+        self.display_data(memory)
         self.show_menu("MainMenu")

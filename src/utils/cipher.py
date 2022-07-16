@@ -1,19 +1,16 @@
 from abc import ABC, abstractmethod
 from codecs import encode
+from typing import ClassVar
 
 
 class Cipher(ABC):
     @abstractmethod
-    def do_cipher(self, text):
-        raise NotImplementedError
-
-    @abstractmethod
-    def do_decipher(self, text):
+    def do_action(self, text):
         raise NotImplementedError
 
 
 class Rot47Cipher(Cipher):
-    def do_cipher(self, text: str) -> str:
+    def do_action(self, text: str) -> str:
         temp_array = []
         for i in range(len(text)):
             j = ord(text[i])
@@ -23,16 +20,10 @@ class Rot47Cipher(Cipher):
                 temp_array.append(text[i])
         return "".join(temp_array)
 
-    def do_decipher(self, text):
-        pass
-
 
 class Rot13Cipher(Cipher):
-    def do_cipher(self, text):
+    def do_action(self, text: str) -> str:
         return encode(text, "rot_13")
-
-    def do_decipher(self, text):
-        pass
 
 
 class CipherFactory(ABC):
@@ -46,11 +37,11 @@ class CipherFactory(ABC):
 
 
 class Rot47CipherFactory(CipherFactory):
-    def cipher(self):
+    def cipher(self) -> ClassVar:
         return Rot47Cipher()
 
     def decipher(self):
-        pass
+        return Rot47Cipher()
 
 
 class Rot13CipherFactory(CipherFactory):
@@ -58,4 +49,4 @@ class Rot13CipherFactory(CipherFactory):
         return Rot13Cipher()
 
     def decipher(self):
-        pass
+        return Rot13Cipher()
