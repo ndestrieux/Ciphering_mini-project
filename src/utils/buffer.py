@@ -12,7 +12,8 @@ class Buffer:
         self.encrypted_text_dict[key].append(text)
 
     def clear(self):
-        self.encrypted_text_dict = {"ROT47": [], "ROT13": []}
+        for key in self.encrypted_text_dict.keys():
+            self.encrypted_text_dict[key].clear()
 
     def __str__(self):
         return str(self.encrypted_text_dict)
