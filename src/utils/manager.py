@@ -60,7 +60,8 @@ class Manager:
     def start(self):
         print("Welcome!")
         time.sleep(1)
-        self.show_menu("MainMenu")
+        while True:
+            self.show_menu("MainMenu")
 
     def show_menu(self, which_menu: str):
         choice = self.get_menu.get(which_menu).show()
@@ -101,7 +102,6 @@ class Manager:
         ciphering = self.encryption_types.get(encryption_type).cipher()
         encrypted_text = ciphering.do_action(text)
         self.buffer.add(encryption_type, encrypted_text)
-        self.show_menu("MainMenu")
 
     def save_to_file(self):
         memory = self.get_data_from_memory()
@@ -111,7 +111,6 @@ class Manager:
                 for value in values:
                     f.write(value + "\n")
         self.buffer.clear()
-        self.show_menu("MainMenu")
 
     def decrypt_from_file(self):
         from_file_to_dict = {}
@@ -124,9 +123,7 @@ class Manager:
                 decrypted_text_list.append(ciphering.do_action(encrypted_text))
             from_file_to_dict[file] = decrypted_text_list
         self.display_data(from_file_to_dict)
-        self.show_menu("MainMenu")
 
     def read_from_memory(self):
         memory = self.get_data_from_memory()
         self.display_data(memory)
-        self.show_menu("MainMenu")
