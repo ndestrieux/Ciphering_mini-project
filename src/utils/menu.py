@@ -25,13 +25,14 @@ class Menu:
                 )
             )
             choice_list = list(self.MENU_CONTEXT.keys())
-            if choice not in choice_list:
-                raise ChoiceOutOfRange(choice_list)
-            return choice
+            try:
+                if choice not in choice_list:
+                    raise ChoiceOutOfRange(choice_list)
+                return choice
+            except ChoiceOutOfRange as e:
+                print(e)
         except ValueError:
             print("Invalid choice. It should be a number.")
-        except ChoiceOutOfRange as e:
-            print(e)
         time.sleep(1)
         return default
 
