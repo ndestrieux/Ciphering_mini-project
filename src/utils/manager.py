@@ -1,6 +1,5 @@
 import os
 import time
-import sys
 from typing import Dict, List
 from pathlib import Path
 from .menu import Menu, CipherMenu
@@ -17,6 +16,7 @@ class Manager:
         self.cipher_menu = CipherMenu()
         self.menu = Menu()
         self.buffer = Buffer()
+        self.is_running = True
         self._options = self.options
         self._get_menu = self.get_menu
         self._encryption_types = self.encryption_types
@@ -30,7 +30,7 @@ class Manager:
                 2: (self.save_to_file,),
                 3: (self.decrypt_from_file,),
                 4: (self.read_from_memory,),
-                5: (sys.exit,),
+                5: (self.exit,),
             },
             "CipherMenu": {
                 0: (self.show_menu, "CipherMenu"),
@@ -60,8 +60,11 @@ class Manager:
     def start(self):
         print("Welcome!")
         time.sleep(1)
-        while True:
+        while self.is_running:
             self.show_menu("MainMenu")
+
+    def exit(self):
+        self.is_running = False
 
     def show_menu(self, which_menu: str):
         choice = self.get_menu.get(which_menu).show()
