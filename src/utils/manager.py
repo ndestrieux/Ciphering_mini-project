@@ -70,7 +70,7 @@ class Manager:
         choice = self.get_menu.get(which_menu).show()
         self.execute(which_menu, choice)
 
-    def execute(self, which_menu, choice):
+    def execute(self, which_menu: str, choice: int):
         func, *args = self.options[which_menu].get(choice)
         func(*args)
 

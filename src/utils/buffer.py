@@ -8,7 +8,7 @@ class Buffer:
         default_factory=lambda: {"ROT47": [], "ROT13": []}
     )
 
-    def add(self, key, text):
+    def add(self, key: str, text: str):
         self.encrypted_text_dict[key].append(text)
 
     def clear(self):

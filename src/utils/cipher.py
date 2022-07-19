@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from codecs import encode
-from typing import ClassVar
 
 
 class Cipher(ABC):
@@ -37,16 +36,16 @@ class CipherFactory(ABC):
 
 
 class Rot47CipherFactory(CipherFactory):
-    def cipher(self) -> ClassVar:
+    def cipher(self) -> Rot47Cipher:
         return Rot47Cipher()
 
-    def decipher(self):
+    def decipher(self) -> Rot47Cipher:
         return Rot47Cipher()
 
 
 class Rot13CipherFactory(CipherFactory):
-    def cipher(self):
+    def cipher(self) -> Rot13Cipher:
         return Rot13Cipher()
 
-    def decipher(self):
+    def decipher(self) -> Rot13Cipher:
         return Rot13Cipher()

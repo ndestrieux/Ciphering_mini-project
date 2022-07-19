@@ -4,5 +4,5 @@ class ChoiceOutOfRange(Exception):
         super().__init__(self.message)
 
     @property
-    def message(self):
+    def message(self) -> str:
         return f"Choice not in range of {self.choices[0]}-{self.choices[-1]}."
