@@ -24,17 +24,19 @@ class Menu:
                     "Please choose an option by typing the associated number and then press <Enter>:\n"
                 )
             )
-            choice_list = list(self.MENU_CONTEXT.keys())
-            try:
-                if choice not in choice_list:
-                    raise ChoiceOutOfRange(choice_list)
-                return choice
-            except ChoiceOutOfRange as e:
-                print(e)
         except ValueError:
             print("Invalid choice. It should be a number.")
-        time.sleep(1)
-        return default
+            time.sleep(1)
+            return default
+        choice_list = list(self.MENU_CONTEXT.keys())
+        try:
+            if choice not in choice_list:
+                raise ChoiceOutOfRange(choice_list)
+            return choice
+        except ChoiceOutOfRange as e:
+            print(e)
+            time.sleep(1)
+            return default
 
 
 class CipherMenu(Menu):
