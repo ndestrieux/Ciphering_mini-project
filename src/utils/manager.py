@@ -1,10 +1,11 @@
 import os
 import time
-from typing import Dict, List
 from pathlib import Path
-from .menu import Menu, CipherMenu
-from .cipher import Rot47CipherFactory, Rot13CipherFactory
+from typing import Dict, List
+
 from .buffer import Buffer
+from .cipher import Rot13CipherFactory, Rot47CipherFactory
+from .menu import CipherMenu, Menu
 
 
 class Manager:
