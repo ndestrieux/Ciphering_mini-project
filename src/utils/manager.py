@@ -9,7 +9,7 @@ from .menu import CipherMenu, Menu
 
 
 class Manager:
-    DATA_FOLDER = Path("src/utils/data/")
+    DATA_FOLDER = Path("../utils/data/")
 
     def __init__(self):
         self.rot47_cipher = Rot47CipherFactory()
@@ -111,7 +111,7 @@ class Manager:
         memory = self.get_data_from_memory()
         for key, values in memory.items():
             file = Path(f"{self.DATA_FOLDER}/{key}")
-            with open(file, "a+", encoding="utf-8") as f:
+            with open(file, "a+") as f:
                 for value in values:
                     f.write(value + "\n")
         self.buffer.clear()
